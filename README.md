@@ -20,93 +20,24 @@ devtools::install_github("helen-food/fhrsdata", quiet = TRUE)
 
 ## Fetching establishments
 
-At the heart of the package is the `get_establishments()` function. This calls
-upon the API to return a tibble of establishments from the FHRS. You could
-call this function with no arguments and it would return all the establishments
-in the data, although it would take a very long time, as there are over half
-a million of them. Not recommended!
+There are three main functions. `get_establishments()` calls
+upon the API to return a tibble of establishments from the FHRS. This call 
+can be customised to a business name, local authority or business type with 
+the `name`, `la` and `type` arguments respectively. 
 
-The chances are, you do not want everything in the FHRS. You may only want places
-people go to eat (restaurants, cafes, mobile caterers, etc.) and not all the
-schools and hospitals. Maybe you are only interested in retailers, or a
-particular retailer. Maybe you only want to know about a particular place.
-Maybe you only want to know how many pubs there are called "The Red Lion". All of
-these are possible with the `get_establishments()` function.
+Although name can be specified using a string, local authority and business 
+type require the correct codes. To see a list of business types and their 
+associated codes, use `get_business_types()`, and to see a list of local 
+authorities and their IDs, use `get_authorities()`.
 
-The `name` argument (NULL by default) is used to search for establishments by name.
-For example: Show me all the establishments with "red lion" in the name:
+A vignette walking through the use of these functions can be obtained using:
 
 ```r
-get_establishments(name = "red lion")
+browseVignettes("fhrsdata")
 ```
 
-Almost 600 red lions! However, are these all pubs?
+## Work in progress
 
-```r
-library(dplyr)
-get_establishments("red lion") %>% count(BusinessType)
-```
-
-
-Some are not. What if you only want pubs? You would use the `type` argument. But
-first, you need to know the code for the type you want to select. You find this
-out using the `get_business_types()` function.
-
-```r
-get_business_types()
-```
-
-From this we can see that the code for pubs is 7843. So let's add that to our
-API call:
-
-```r
-get_establishments(name = "red lion", type = 7843)
-```
-
-Now only the pubs have been returned. The final customisation option is to filter
-the search by local authority. Out of interest, which local authorities have the
-most Red Lions?
-
-```r
-get_establishments(name = "red lion", type = 7843) %>%
-  count(LocalAuthorityName) %>%
-  arrange(desc(n)) %>%
-  head()
-```
-
-And the winner is Powys. Let's say we wanted to further restrict our search for
-red lions just to Powys for some reason. First we need to find out the ID number
-for Powys in the data. We can do that using the `get_authorities()` function, which
-returns, you've guessed it, a list of all local authorities in the FHRS. That list
-is a bit longer than the list of business types, though. Fortunately we know that
-Powys is in Wales, and can search only for authorities in Wales using the `country`
-argument.
-
-```r
-get_authorities(country = "Wales")
-```
-
-Or perhaps even better, just filter the authority search down to Powys.
-
-```r
-get_authorities() %>%
-  filter(Name == "Powys")
-```
-
-
-To complete our slightly implausible quest for Red Lion pubs in Powys, the
-`get_establishments()` function is called as follows:
-
-```r
-get_establishments(name="red lion", type = 7843, la = 349)
-```
-
-Finally, it is worth noting that the tibble returned by default from `get_establishments()` is
-a condensed version that includes only a selection of the (arguably most useful) fields. But
-if you want to make that decision for yourself, you can return everything by
-setting the `condensed` argument to FALSE.
-
-```r
-get_establishments(name="red lion", type = 7843, la = 349, condensed = FALSE)
-```
-
+Further functions will be developed. To make suggestions for future functions, or
+bug reports, please submit an [issue](https://github.com/helen-food/fhrsdata/issues).
+Other feedback welcome to helen.graham@food.gov.uk.
