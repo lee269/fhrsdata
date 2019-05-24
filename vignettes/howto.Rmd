@@ -24,7 +24,7 @@ range of scenarios.
 ```{r warning=FALSE, message=FALSE}
 #install devtools if necessary
 #install.packages("devtools")
-devtools::install_github("helen-food/fhrsdata")
+devtools::install_github("helen-food/fhrsdata", quiet = TRUE)
 ```
 
 ### Load it up
