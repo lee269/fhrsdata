@@ -38,11 +38,11 @@ The `type` argument allows you to restrict your search to a particular
 business type. The list of businesses in the FHRS can be returned using the 
 `get_business_types()` function. This will also return the corresponding code 
 for each business type. For example, the code for business type 
-'Restaurant/Cafe/Canteen' is 1, so to search for all establishments of this type, 
-you would use:
+'Restaurant/Cafe/Canteen' is 1, so to search for, say, all restaurants with 
+the word 'amore' in their name, you would use:
 
 ```r
-get_establishments(type = 1)
+get_establishments(name = "amore", type = 1)
 ```
 
 The `la` argument to `get_establishments()` allows you to restrict your search 
