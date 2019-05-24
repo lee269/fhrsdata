@@ -15,29 +15,56 @@ range of scenarios.
 ```r
 #install devtools if necessary
 #install.packages("devtools")
-devtools::install_github("helen-food/fhrsdata", quiet = TRUE)
+devtools::install_github("helen-food/fhrsdata")
 ```
 
 ## Fetching establishments
 
-There are three main functions. `get_establishments()` calls
-upon the API to return a tibble of establishments from the FHRS. This call 
-can be customised to a business name, local authority or business type with 
-the `name`, `la` and `type` arguments respectively. 
+The function `get_establishments()` calls
+upon the API to return a tibble of establishments from the FHRS. Calling this 
+function with no arguments would return every establishment in the FHRS - OK if 
+this is really what you want, but it will take a long time.
 
-Although name can be specified using a string, local authority and business 
-type require the correct codes. To see a list of business types and their 
-associated codes, use `get_business_types()`, and to see a list of local 
-authorities and their IDs, use `get_authorities()`.
+Alternatively, you can customise your API call with the optional arguments.
 
-A vignette walking through the use of these functions can be obtained using:
+The `name` argument takes a string (e.g. "pret a manger") and searches for 
+business names that contain that string.
+
+The `type` argument allows you to restrict your search to a particular 
+business type. The list of businesses in the FHRS can be returned using the 
+`get_business_types()` function. This will also return the corresponding code 
+for each business type. For example, the code for business type 
+'Restaurant/Cafe/Canteen' is 1, so to search for all establishments of this type, 
+you would use:
 
 ```r
-browseVignettes("fhrsdata")
+get_establishments(type = 1)
 ```
+
+The `la` argument to `get_establishments()` allows you to restrict your search 
+to a particular local authority. To get the list of authorities in the FHRS, 
+use the `get_authorities()` function. Again it is the authority ID number not 
+the name that is required. Say you wanted to return all restaurants in Aberdeen. 
+You can find the code for Aberdeen using:
+
+```r
+get_athorities() %>% 
+  filter(grepl("Aberdeen", Name))
+```
+
+This would reveal the relevant ID number to be 197. The the establishments call 
+would be made as follows:
+
+```r
+get_establishments(type = 1, la = 197)
+```
+
 
 ## Work in progress
 
-Further functions will be developed. To make suggestions for future functions, or
+This package is heavily under construction and is liable to break. Further functions 
+will be added to the package. 
+
+To make suggestions for future functions, or
 bug reports, please submit an [issue](https://github.com/helen-food/fhrsdata/issues).
 Other feedback welcome to helen.graham@food.gov.uk.
