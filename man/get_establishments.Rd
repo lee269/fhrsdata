@@ -39,12 +39,12 @@ get_business_types()
 # Perform establishment search
 get_establishments(la = 197, type = 1)
 
-# A list of all businesses containing the word "Pret" in Birmingham
+# A list of all businesses containing the words "pret a manger" in Birmingham
 # Find out the code for Birmingham
 get_authorities() \%>\%
   filter(grepl("Birmingham", name))
 # Perform establishment search
-get_establishments(name = "Pret", la = 374)
+get_establishments(name = "pret a manger", la = 374)
 }
 
 
