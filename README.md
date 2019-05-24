@@ -27,8 +27,12 @@ this is really what you want, but it will take a long time.
 
 Alternatively, you can customise your API call with the optional arguments.
 
-The `name` argument takes a string (e.g. "pret a manger") and searches for 
-business names that contain that string.
+The `name` argument takes a string and searches for 
+business names that contain that string. For example:
+
+```r
+get_establishments(name = "pret a manger")
+```
 
 The `type` argument allows you to restrict your search to a particular 
 business type. The list of businesses in the FHRS can be returned using the 
@@ -48,17 +52,24 @@ the name that is required. Say you wanted to return all restaurants in Aberdeen.
 You can find the code for Aberdeen using:
 
 ```r
-get_athorities() %>% 
+get_authorities() %>% 
   filter(grepl("Aberdeen", Name))
 ```
 
-This would reveal the relevant ID number to be 197. The the establishments call 
-would be made as follows:
+This would reveal the relevant ID number to be 197. The establishments call 
+would then be made as follows:
 
 ```r
 get_establishments(type = 1, la = 197)
 ```
 
+By default, the table returns a selection of (arguably the most useful) variables. 
+If you'd rather have the whole lot, this can be specified by setting the `condensed` 
+argument to FALSE.
+
+```r
+get_establishments(type = 1, la = 197, condensed = FALSE)
+```
 
 ## Work in progress
 
